@@ -1,0 +1,1 @@
+# Analyzing-zip-file-with-.wsf-file-inside

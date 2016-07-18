@@ -11,10 +11,11 @@ or
 and a zip file attached containing a .wsf file.
 
 You can find here:
- * analyze.py : it tries to extract and find malicious URL from where malicious data is downloaded
+ * analyze.py : it tries to extract and find malicious URL from where malicious data is downloaded. Warning: it uses an eval() on parts of the .wsf file. 
  * unxor.py : it tries to unxor the malicious data in order to give you back the original exe file
  * 6A28B_mitsu.zip : a zip file with a .msf file inside. It's protected with the pass "infected". WARNING: this file can harm your computer. Treat it with caution.
  * UHE_prng.js : this file will print 200k random numbers seeded with 256
  * prng_js : 200k random numbers seeded with 256.
+ * o54b6 : an encrypted file. WARNING: this file can harm your computer once un-xored.
 
 You can read http://0x90909090.blogspot.fr/2016/07/analyzing-zip-with-wsf-file-inside.html for more information.

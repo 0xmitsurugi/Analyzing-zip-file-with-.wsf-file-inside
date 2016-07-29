@@ -106,13 +106,39 @@ def extract_URL(data):
                 
     return URL_tab
 
+def extract_seed(data):
+    data=data.split("\n")
+    var_to_find=""
+    for line in data[::-1]:
+        if re.search("mash\(\w+\)",line) > 0:
+            var_to_find=line.split("mash(")[1].split(")")[0]
+            #print "[+] mash() var found: "+var_to_find
+        if var_to_find != "":
+            if re.search("var "+var_to_find+" = ",line) > 0:
+                seed=line.split(" ")[-1][:-1]
+    return seed
+
 ### MAIN
-#At first, extract the zipped file
-print "Extracting zip"
-wsf_data=read_zip(sys.argv[1])
+#At first, extract the zipped file or get the wsf file directly
+if re.search("\.zip$",sys.argv[1]):
+    print "[+] Extracting zip"
+    wsf_data=read_zip(sys.argv[1])
+elif re.search("\.wsf$",sys.argv[1]):
+    print "[+] Working on wsf file"
+    f=open(sys.argv[1],"ro")
+    wsf_data = f.readlines()
+    f.close()
+    #print wsf_data
+    wsf_data=''.join(wsf_data)
+else:
+    print "[ ] Unknown file, use a zip or a wsf"
+    print "    Exiting cowardly"
+    exit(1)
+
 #Then, we add all vars, split, reverse and join data to get an obfuscated js
 print "Get obfusctated js"
 obfus_js = extract_stage2(wsf_data)
+
 #Then, we try to extract relevant data
 #print obfus_js
 print "Parsing obfuscated and getting URLs"
@@ -120,3 +146,7 @@ URLS = extract_URL(obfus_js)
 print "[+] printing download URLs"
 for U in URLS:
     print "    " + U
+#Get the PRNG value
+print "Parsing obfuscated and getting PRNG value"
+seed = extract_seed(obfus_js)
+print "[+] Seed value for prng: "+seed
